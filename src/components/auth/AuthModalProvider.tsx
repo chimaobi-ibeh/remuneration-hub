@@ -30,6 +30,9 @@ export const AuthModalProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuthModal = () => {
   const ctx = useContext(AuthModalContext);
-  if (!ctx) throw new Error("useAuthModal must be used within AuthModalProvider");
+  if (!ctx) {
+    // Fallback no-op so consumers don't crash if rendered outside provider (e.g. during HMR)
+    return { open: () => {}, close: () => {} };
+  }
   return ctx;
 };
