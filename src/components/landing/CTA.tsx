@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
-  const { open } = useAuthModal();
   return (
     <section className="py-24 bg-emerald relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.04]" style={{
@@ -30,10 +29,12 @@ const CTA = () => {
         </div>
 
         <div className="flex flex-wrap gap-4 lg:justify-end">
-          <Button variant="gold" size="xl" onClick={() => open("register")}>
-            Create Account <ArrowRight className="ml-2 h-4 w-4" />
+          <Button asChild variant="gold" size="xl">
+            <Link to="/auth/register">Create Account <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </Button>
-          <Button variant="outlineLight" size="xl" onClick={() => open("signin")}>Sign In</Button>
+          <Button asChild variant="outlineLight" size="xl">
+            <Link to="/auth/signin">Sign In</Link>
+          </Button>
         </div>
       </div>
     </section>
