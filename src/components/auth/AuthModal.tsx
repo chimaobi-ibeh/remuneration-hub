@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, Scale } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Eye, EyeOff, Loader2, Mail, Scale } from "lucide-react";
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
-type Mode = "signin" | "register";
+type Mode = "signin" | "register" | "forgot";
 
 const signInSchema = z.object({
   email: z.string().trim().min(1, "Email is required").email("Invalid email").max(255),
@@ -36,8 +36,13 @@ const registerSchema = z
     message: "Passwords do not match",
   });
 
+const forgotSchema = z.object({
+  email: z.string().trim().min(1, "Email is required").email("Invalid email").max(255),
+});
+
 type SignInValues = z.infer<typeof signInSchema>;
 type RegisterValues = z.infer<typeof registerSchema>;
+type ForgotValues = z.infer<typeof forgotSchema>;
 
 interface Props {
   open: boolean;
@@ -61,40 +66,60 @@ const AuthModal = ({ open, onOpenChange, mode, setMode }: Props) => {
             </div>
           </div>
 
-          <div className="flex gap-1 bg-ivory/10 p-1 rounded-sm">
-            {(["signin", "register"] as Mode[]).map((m) => (
-              <button
-                key={m}
-                type="button"
-                onClick={() => setMode(m)}
-                className={cn(
-                  "flex-1 text-xs tracking-eyebrow uppercase py-2.5 rounded-sm transition-elegant font-medium",
-                  mode === m ? "bg-ivory text-primary" : "text-ivory/70 hover:text-ivory",
-                )}
-              >
-                {m === "signin" ? "Sign In" : "Register"}
-              </button>
-            ))}
-          </div>
+          {mode !== "forgot" && (
+            <div className="flex gap-1 bg-ivory/10 p-1 rounded-sm">
+              {(["signin", "register"] as Mode[]).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setMode(m)}
+                  className={cn(
+                    "flex-1 text-xs tracking-eyebrow uppercase py-2.5 rounded-sm transition-elegant font-medium",
+                    mode === m ? "bg-ivory text-primary" : "text-ivory/70 hover:text-ivory",
+                  )}
+                >
+                  {m === "signin" ? "Sign In" : "Register"}
+                </button>
+              ))}
+            </div>
+          )}
+          {mode === "forgot" && (
+            <button
+              type="button"
+              onClick={() => setMode("signin")}
+              className="inline-flex items-center gap-2 text-xs tracking-eyebrow uppercase text-ivory/70 hover:text-ivory transition-elegant"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Back to Sign In
+            </button>
+          )}
         </div>
 
         <div className="px-8 py-7">
           <DialogHeader className="mb-5">
             <DialogTitle className="font-display text-2xl font-normal text-primary">
-              {mode === "signin" ? "Welcome back, counsel." : "Create your account."}
+              {mode === "signin" && "Welcome back, counsel."}
+              {mode === "register" && "Create your account."}
+              {mode === "forgot" && "Reset your password."}
             </DialogTitle>
             <DialogDescription className="text-sm">
-              {mode === "signin"
-                ? "Sign in to access your remuneration dashboard."
-                : "Register as an NBA member to begin filing documents."}
+              {mode === "signin" && "Sign in to access your remuneration dashboard."}
+              {mode === "register" && "Register as an NBA member to begin filing documents."}
+              {mode === "forgot" && "Enter your email and we'll send you a link to reset your password."}
             </DialogDescription>
           </DialogHeader>
 
-          {mode === "signin" ? (
-            <SignInForm onSuccess={() => onOpenChange(false)} switchMode={() => setMode("register")} />
-          ) : (
+          {mode === "signin" && (
+            <SignInForm
+              onSuccess={() => onOpenChange(false)}
+              switchMode={() => setMode("register")}
+              onForgot={() => setMode("forgot")}
+            />
+          )}
+          {mode === "register" && (
             <RegisterForm onSuccess={() => onOpenChange(false)} switchMode={() => setMode("signin")} />
           )}
+          {mode === "forgot" && <ForgotForm onBack={() => setMode("signin")} />}
         </div>
       </DialogContent>
     </Dialog>
