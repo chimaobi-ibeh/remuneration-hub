@@ -149,7 +149,7 @@ const PasswordInput = ({
 const FieldError = ({ msg }: { msg?: string }) =>
   msg ? <p className="text-xs text-destructive mt-1.5">{msg}</p> : null;
 
-const SignInForm = ({ onSuccess, switchMode }: { onSuccess: () => void; switchMode: () => void }) => {
+const SignInForm = ({ onSuccess, switchMode, onForgot }: { onSuccess: () => void; switchMode: () => void; onForgot: () => void }) => {
   const {
     register,
     handleSubmit,
@@ -173,7 +173,7 @@ const SignInForm = ({ onSuccess, switchMode }: { onSuccess: () => void; switchMo
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <Label htmlFor="signin-password" className="text-xs tracking-eyebrow uppercase text-muted-foreground">Password</Label>
-          <a href="#forgot" className="text-xs text-primary hover:text-accent transition-elegant">Forgot?</a>
+          <button type="button" onClick={onForgot} className="text-xs text-primary hover:text-accent transition-elegant">Forgot?</button>
         </div>
         <PasswordInput id="signin-password" autoComplete="current-password" placeholder="••••••••" {...register("password")} />
         <FieldError msg={errors.password?.message} />
