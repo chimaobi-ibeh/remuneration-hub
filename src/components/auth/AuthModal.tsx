@@ -248,4 +248,84 @@ const RegisterForm = ({ onSuccess, switchMode }: { onSuccess: () => void; switch
   );
 };
 
+const ForgotForm = ({ onBack }: { onBack: () => void }) => {
+  const [sent, setSent] = useState<string | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ForgotValues>({ resolver: zodResolver(forgotSchema) });
+
+  const onSubmit = async (values: ForgotValues) => {
+    await new Promise((r) => setTimeout(r, 800));
+    setSent(values.email);
+    toast({
+      title: "Reset link sent",
+      description: `If an account exists for ${values.email}, you'll receive an email shortly.`,
+    });
+  };
+
+  if (sent) {
+    return (
+      <div className="text-center py-2">
+        <div className="mx-auto h-14 w-14 rounded-full bg-accent/10 flex items-center justify-center mb-4">
+          <CheckCircle2 className="h-7 w-7 text-accent" />
+        </div>
+        <h3 className="font-display text-xl text-primary mb-2">Check your inbox</h3>
+        <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+          We've sent password reset instructions to <span className="text-primary font-medium">{sent}</span>.
+          The link will expire in 30 minutes.
+        </p>
+        <Button type="button" variant="hero" size="lg" className="w-full" onClick={onBack}>
+          Return to Sign In
+        </Button>
+        <button
+          type="button"
+          onClick={() => setSent(null)}
+          className="mt-3 text-xs text-muted-foreground hover:text-primary transition-elegant"
+        >
+          Didn't receive it? Try another email
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="flex items-start gap-3 rounded-sm bg-parchment/60 border border-border/60 p-3 mb-2">
+        <Mail className="h-4 w-4 text-accent mt-0.5 shrink-0" />
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Enter the email associated with your NBA member account. We'll email you a secure link to set a new password.
+        </p>
+      </div>
+
+      <div>
+        <Label htmlFor="forgot-email" className="text-xs tracking-eyebrow uppercase text-muted-foreground">Email</Label>
+        <Input
+          id="forgot-email"
+          type="email"
+          autoComplete="email"
+          autoFocus
+          placeholder="counsel@example.com"
+          className="mt-1.5"
+          {...register("email")}
+        />
+        <FieldError msg={errors.email?.message} />
+      </div>
+
+      <Button type="submit" variant="hero" size="lg" className="w-full mt-2" disabled={isSubmitting}>
+        {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
+        Send Reset Link
+      </Button>
+
+      <p className="text-center text-sm text-muted-foreground pt-2">
+        Remembered your password?{" "}
+        <button type="button" onClick={onBack} className="text-primary font-medium hover:text-accent transition-elegant">
+          Sign in
+        </button>
+      </p>
+    </form>
+  );
+};
+
 export default AuthModal;

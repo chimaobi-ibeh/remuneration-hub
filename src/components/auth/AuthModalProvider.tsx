@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import AuthModal from "./AuthModal";
 
-type AuthMode = "signin" | "register";
+type AuthMode = "signin" | "register" | "forgot";
 
 type AuthModalContextType = {
   open: (mode?: AuthMode) => void;
