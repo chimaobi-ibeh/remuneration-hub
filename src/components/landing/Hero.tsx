@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import hero from "@/assets/hero-courthouse.jpg";
+import { useAuthModal } from "@/components/auth/AuthModalProvider";
 
-const Hero = () => (
+const Hero = () => {
+  const { open } = useAuthModal();
+  return (
   <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-20">
     <div className="absolute inset-0">
       <img src={hero} alt="Nigerian courthouse at golden hour" className="h-full w-full object-cover" width={1920} height={1280} />
@@ -26,10 +29,10 @@ const Hero = () => (
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <Button variant="hero" size="xl">
+          <Button variant="hero" size="xl" onClick={() => open("register")}>
             Create Account <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
-          <Button variant="ghostLight" size="xl">Member Sign In</Button>
+          <Button variant="ghostLight" size="xl" onClick={() => open("signin")}>Member Sign In</Button>
         </div>
 
         <div className="mt-20 grid grid-cols-3 gap-8 max-w-2xl border-t border-ivory/15 pt-8">
@@ -53,6 +56,7 @@ const Hero = () => (
       <div className="h-12 w-px bg-ivory/40" />
     </div>
   </section>
-);
+  );
+};
 
 export default Hero;
