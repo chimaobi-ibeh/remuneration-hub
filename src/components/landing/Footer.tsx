@@ -29,8 +29,8 @@ const Footer = () => (
         <div>
           <p className="text-[11px] tracking-eyebrow uppercase text-accent font-semibold mb-4">Account</p>
           <ul className="space-y-3 text-sm">
-            <li><a href="#" className="hover:text-accent transition-elegant">Register</a></li>
-            <li><a href="#" className="hover:text-accent transition-elegant">Sign In</a></li>
+            <li><a href="/auth/register" className="hover:text-accent transition-elegant">Register</a></li>
+            <li><a href="/auth/signin" className="hover:text-accent transition-elegant">Sign In</a></li>
             <li><a href="#" className="hover:text-accent transition-elegant">Support</a></li>
           </ul>
         </div>

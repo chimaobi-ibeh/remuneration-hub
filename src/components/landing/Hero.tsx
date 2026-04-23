@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import hero from "@/assets/hero-courthouse.jpg";
-import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
-  const { open } = useAuthModal();
   return (
   <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-20">
     <div className="absolute inset-0">
@@ -29,10 +28,12 @@ const Hero = () => {
         </p>
 
         <div className="flex flex-wrap gap-4">
-          <Button variant="hero" size="xl" onClick={() => open("register")}>
-            Create Account <ArrowRight className="ml-2 h-4 w-4" />
+          <Button asChild variant="hero" size="xl">
+            <Link to="/auth/register">Create Account <ArrowRight className="ml-2 h-4 w-4" /></Link>
           </Button>
-          <Button variant="ghostLight" size="xl" onClick={() => open("signin")}>Member Sign In</Button>
+          <Button asChild variant="ghostLight" size="xl">
+            <Link to="/auth/signin">Member Sign In</Link>
+          </Button>
         </div>
 
         <div className="mt-20 grid grid-cols-3 gap-8 max-w-2xl border-t border-ivory/15 pt-8">
@@ -50,7 +51,6 @@ const Hero = () => {
       </div>
     </div>
 
-    {/* Scroll indicator */}
     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-ivory/60 animate-shimmer">
       <span className="text-[10px] tracking-eyebrow uppercase">Scroll</span>
       <div className="h-12 w-px bg-ivory/40" />

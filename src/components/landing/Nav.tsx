@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import emblem from "@/assets/nba-emblem.png";
-import { useAuthModal } from "@/components/auth/AuthModalProvider";
+import { Link } from "react-router-dom";
 
 const links = [
   { label: "Features", href: "#features" },
@@ -9,7 +9,6 @@ const links = [
 ];
 
 const Nav = () => {
-  const { open } = useAuthModal();
   return (
     <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/60">
       <nav className="container mx-auto flex items-center justify-between h-20">
@@ -30,14 +29,15 @@ const Nav = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => open("signin")}
+          <Link
+            to="/auth/signin"
             className="hidden sm:inline-block text-sm font-medium text-primary hover:text-accent transition-elegant"
           >
             Sign In
-          </button>
-          <Button variant="hero" size="sm" onClick={() => open("register")}>Register</Button>
+          </Link>
+          <Button asChild variant="hero" size="sm">
+            <Link to="/auth/register">Register</Link>
+          </Button>
         </div>
       </nav>
     </header>
